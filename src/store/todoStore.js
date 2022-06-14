@@ -1,20 +1,47 @@
 import { writable } from 'svelte/store'; // like context in React, global store
+import { supabase } from '../supabase';
 
 export const todos = writable([]); // initialize as empty array
 
-export const addTodo = (text) => {
-	// Update is a method that takes one argument which is a callback. The callback takes the existing store value as its argument and returns the new value to be set to the store.
-	todos.update((cur) => {
-		const newTodos = [...cur, { text, completed: false, id: Date.now() }];
-		return newTodos;
-	});
+export const loadTodos = async () => {
+	const { data, error } = await supabase.from('todos').select();
+	console.log('Load data', data);
+
+	if (error) {
+		return console.error(error);
+	}
+	todos.set(data);
 };
 
-export const deleteTodo = (id) => {
+export const addTodo = async (text, user_id = 'test') => {
+	const { data, error } = await supabase.from('todos').insert([{ text }]);
+	console.log('data', data);
+	if (error) {
+		return console.error(error);
+	}
+	todos.update((cur) => [...cur, data[0]]);
+};
+
+export const deleteTodo = async (id) => {
+	const { error } = await supabase.from('todos').delete().match({ id });
+
+	if (error) {
+		return console.error(error);
+	}
+
 	todos.update((todos) => todos.filter((todo) => todo.id !== id));
 };
 
-export const toggleTodoCompleted = (id) => {
+export const toggleTodoCompleted = async (id, currentState) => {
+	const { error } = await supabase
+		.from('todos')
+		.update([{ completed: !currentState }])
+		.match({ id });
+
+	if (error) {
+		return console.error(error);
+	}
+
 	todos.update((todos) => {
 		let index = -1;
 		for (let i = 0; i < todos.length; i++) {

@@ -1,6 +1,7 @@
 <script>
-	import { addTodo } from '../store/todoStore';
-	let todo = '';
+	import { addTodo, loadTodos } from '../store/todoStore';
+	let todo = ''; // initialize empty todo
+	loadTodos(); // invoke on page load list of todos from supabase
 
 	const handleSubmit = () => {
 		addTodo(todo); // Invoke addTodo Fn

@@ -1,4 +1,5 @@
 <script>
+	import { supabase } from '../supabase.js';
 	import '../app.css';
 </script>
 
