@@ -5,7 +5,6 @@ export const todos = writable([]); // initialize as empty array
 
 export const loadTodos = async () => {
 	const { data, error } = await supabase.from('todos').select();
-	console.log('Load data', data);
 
 	if (error) {
 		return console.error(error);
@@ -13,9 +12,10 @@ export const loadTodos = async () => {
 	todos.set(data);
 };
 
-export const addTodo = async (text, user_id = 'test') => {
-	const { data, error } = await supabase.from('todos').insert([{ text, completed: false }]);
-	console.log('data', data);
+export const addTodo = async (text, user_id) => {
+	const { data, error } = await supabase
+		.from('todos')
+		.insert([{ text, completed: false, user_id }]);
 	if (error) {
 		return console.error(error);
 	}

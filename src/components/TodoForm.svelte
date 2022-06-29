@@ -1,12 +1,12 @@
 <script>
 	import { addTodo, loadTodos } from '../store/todoStore';
+	import { user } from '../store/authStore';
 	let todo = ''; // initialize empty todo
 	loadTodos(); // invoke on page load list of todos from supabase
 
 	const handleSubmit = () => {
-		addTodo(todo); // Invoke addTodo Fn
+		addTodo(todo, $user.id); // Invoke addTodo Fn
 		todo = ''; // reset todo after addTodo is invoked
-		console.log('submitting');
 	};
 </script>
 

@@ -6,8 +6,6 @@
 	import Auth from '../components/Auth.svelte';
 	import { loadTodos } from '../store/todoStore.js';
 
-	console.log('supabase.auth.user()', supabase.auth.user());
-
 	user.set(supabase.auth.user());
 
 	supabase.auth.onAuthStateChange((_, session) => {

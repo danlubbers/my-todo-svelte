@@ -7,7 +7,6 @@
 	const handleLogin = async () => {
 		try {
 			loading = true;
-			console.log(email);
 			const { error } = await supabase.auth.signIn({ email });
 
 			if (error) throw error;
